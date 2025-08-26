@@ -68,11 +68,18 @@ function convertLine(line, encrypt) {
 const splitLines = str => str.split(/\r?\n/);
 
 function readSave(text, encrypt) {
-    let output = []
-    for (line of splitLines(text)) {
+    let output = [];
+    for (let line of splitLines(text)) {
+        try {
+            decodeURIComponent(escape(line));
+            output.push(line + '\n');
+            continue;
+        } catch (e) {
+        }
+
         let converted = convertLine(line, encrypt);
         if (converted === null) {
-            continue
+            continue;
         }
 
         output.push(converted);
